@@ -21,8 +21,10 @@ private:
 
 public:
     void NumberToArray_14(int INT_Input);
-    void LinkToCenter(int INT_Input);
+    void Center_Location(int Center_INDEX, int *INT_X, int *INT_Y);
+    int DistanceToCenter(int Center_INDEX, int INT_X, int INT_Y);
 
+    void LinkToCenter(int INT_Input);
 
     int Checking_Data(int INT_X, int INT_Y);
 };
@@ -38,9 +40,12 @@ int main() {
 
     Root_Map_14 FirstSession;
 
-    FirstSession.NumberToArray_14(Test_Num_01);
-    std::cout<< FirstSession.Checking_Data(1,1);
+    FirstSession.LinkToCenter(Test_Num_01);
+    std::cout<<std::endl;
+    FirstSession.LinkToCenter(Test_Num_02);
 
+    std::cout<< FirstSession.Checking_Data(0,0) <<std::endl;
+    std::cout<< FirstSession.Checking_Data(13,0) <<std::endl;
 
 
     return 0;
@@ -56,10 +61,11 @@ void Root_Map_12::NumberToArray_12(int INT_Input)
 
     Buff_Num_X=INT_Input/10000;
 
-    Map_Array_12[Buff_Num_X][Buff_Num_Y]=Buff_Num_Type;
+    Map_Array_12[Buff_Num_X-1][Buff_Num_Y-1]=Buff_Num_Type;
 
     //std::cout<< Buff_Num_X << ", " << Buff_Num_Y << " = " << Buff_Num_Type <<std::endl;
 }
+
 void Root_Map_14::NumberToArray_14(int INT_Input)
 {
     int Buff_Num_X, Buff_Num_Y, Buff_Num_Type;
@@ -70,10 +76,106 @@ void Root_Map_14::NumberToArray_14(int INT_Input)
 
     Buff_Num_X=INT_Input/10000;
 
-    Map_Array_14[Buff_Num_X][Buff_Num_Y]=Buff_Num_Type;
+    Map_Array_14[Buff_Num_X-1][Buff_Num_Y-1]=Buff_Num_Type;
 
     //std::cout<< Buff_Num_X << ", " << Buff_Num_Y << " = " << Buff_Num_Type <<std::endl;
 }
+void Root_Map_14::Center_Location(int Center_INDEX, int *INT_X, int *INT_Y)
+{
+    switch (Center_INDEX)
+    {
+        case 1:
+            *INT_X=5;
+            *INT_Y=3;
+            break;
+        case 2:
+            *INT_X=6;
+            *INT_Y=3;
+            break;
+        case 3:
+            *INT_X=7;
+            *INT_Y=3;
+            break;
+        case 4:
+            *INT_X=8;
+            *INT_Y=3;
+            break;
+        case 5:
+            *INT_X=10;
+            *INT_Y=5;
+            break;
+        case 6:
+            *INT_X=10;
+            *INT_Y=6;
+            break;
+        case 7:
+            *INT_X=10;
+            *INT_Y=7;
+            break;
+        case 8:
+            *INT_X=10;
+            *INT_Y=8;
+            break;
+        case 9:
+            *INT_X=8;
+            *INT_Y=10;
+            break;
+        case 10:
+            *INT_X=7;
+            *INT_Y=10;
+            break;
+        case 11:
+            *INT_X=6;
+            *INT_Y=10;
+            break;
+        case 12:
+            *INT_X=5;
+            *INT_Y=10;
+            break;
+        case 13:
+            *INT_X=3;
+            *INT_Y=8;
+            break;
+        case 14:
+            *INT_X=3;
+            *INT_Y=7;
+            break;
+        case 15:
+            *INT_X=3;
+            *INT_Y=6;
+            break;
+        case 16:
+            *INT_X=3;
+            *INT_Y=5;
+            break;
+        default:
+            break;
+    }
+}
+int Root_Map_14::DistanceToCenter(int Center_INDEX, int INT_X, int INT_Y)
+{
+    if(INT_X<9&&INT_Y<9)
+    {
+
+    }
+    else if(INT_X>4&&INT_Y<9)
+    {
+
+    }
+    else if(INT_X>4&&INT_Y>4)
+    {
+
+    }
+    else if(INT_X<9&&INT_Y>4)
+    {
+
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 void Root_Map_14::LinkToCenter(int INT_Input)
 {
     int Buff_Num_X, Buff_Num_Y, Buff_Num_Type;
@@ -84,11 +186,18 @@ void Root_Map_14::LinkToCenter(int INT_Input)
 
     Buff_Num_X=INT_Input/10000;
 
-    Map_Array_14[Buff_Num_X][Buff_Num_Y]=Buff_Num_Type;
+    Map_Array_14[Buff_Num_X-1][Buff_Num_Y-1]=Buff_Num_Type;
+
+    //std::cout<<Buff_Num_X<<", "<<Buff_Num_Y<<std::endl;
+
+    Root_Type_xy(0,Buff_Num_Type,&Buff_Num_X,&Buff_Num_Y);
+
+    //std::cout<<Buff_Num_X<<", "<<Buff_Num_Y<<std::endl;
 
 
 
 }
+
 
 void Root_Type_xy(int ForE, int Type,int *INT_X, int *INT_Y)
 {
