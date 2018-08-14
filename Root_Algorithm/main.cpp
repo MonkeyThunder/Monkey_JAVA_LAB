@@ -11,24 +11,25 @@ public:
     void Set_Flower();
 
     void NumberToArray_14(int INT_Input);
+    void NumberToArray_14(int INT_Input, int *Type, int *INT_X, int *INT_Y);
+
     void Center_Location(int Center_INDEX, int *INT_X, int *INT_Y);
     int DistanceToCenter(int Center_INDEX, int INT_X, int INT_Y);
     int MaxDistanceByType(int Root_Type);
-    void FindRoute(int INT_Type,int INT_X, int INT_Y);
+    void RootTypeToSetWall(int Type, int INT_X, int INT_Y);
 
     int Checking_Data(int INT_X, int INT_Y);
     void Print_Data();
     void Print_Root_Map();
 };
 
-void Root_Type_xy(int ForE, int Type, int *INT_X, int *INT_Y);
+void RootTypexy(int ForE, int Type, int *INT_X, int *INT_Y);
 
 int main() {
 
 
     int Test_Num_01=40345;
     int Test_Num_02=130233;
-    int Test_Num_03=120199;
 
     Root_Map_14 FirstSession;
 
@@ -40,8 +41,12 @@ int main() {
     FirstSession.NumberToArray_14(Test_Num_02);
 
     FirstSession.Print_Data();
-    //FirstSession.Print_Root_Map();
 
+    int Test_Type, Test_X, Test_Y;
+
+    //FirstSession.NumberToArray_14(Test_Num_02,&Test_Type,&Test_X,&Test_Y);
+
+    //std::cout<< Test_Type << " " << Test_X << " " << Test_Y;
 
     return 0;
 }
@@ -62,14 +67,25 @@ void Root_Map_14::NumberToArray_14(int INT_Input) {
 
     Buff_Num_Type=(INT_Input%100);
 
-    Buff_Num_Y=2*((INT_Input%10000-Buff_Num_Type)/100);
+    Buff_Num_Y=2*((INT_Input%10000-Buff_Num_Type)/100)-2;
 
-    Buff_Num_X=2*(INT_Input/10000);
+    Buff_Num_X=2*(INT_Input/10000)-2;
 
-    Map_Array_14[Buff_Num_X-2][Buff_Num_Y-2]=Buff_Num_Type;
+    Map_Array_14[Buff_Num_X][Buff_Num_Y]=Buff_Num_Type;
+
+    RootTypeToSetWall(Buff_Num_Type,Buff_Num_X,Buff_Num_Y);
 
     //std::cout<< Buff_Num_X << ", " << Buff_Num_Y << " = " << Buff_Num_Type <<std::endl;
 }
+void Root_Map_14::NumberToArray_14(int INT_Input, int *Type, int *INT_X, int *INT_Y) {
+
+    *Type=(INT_Input%100);
+
+    *INT_Y=2*((INT_Input%10000-*Type)/100)-2;
+
+    *INT_X=2*(INT_Input/10000)-2;
+}
+
 void Root_Map_14::Center_Location(int Center_INDEX, int *INT_X, int *INT_Y) {
     switch (Center_INDEX)
     {
@@ -173,49 +189,70 @@ int Root_Map_14::MaxDistanceByType(int Root_Type){
     }
     return Buff_Num;
 }
+void Root_Map_14::RootTypeToSetWall(int Type, int INT_X, int INT_Y){
+    int Buff_Num;
 
-void Root_Map_14::FindRoute(int INT_Type,int INT_X, int INT_Y){
-    int Buff_Num_X, Buff_Num_X01, Buff_Num_X02, Buff_Num_Y, Buff_Num_Y01, Buff_Num_Y02;
-    int Buff_Num01;
+    Buff_Num=Type%10;
 
-    Buff_Num_X=INT_X; Buff_Num_Y=INT_Y;
-    Buff_Num_X01=Buff_Num_X; Buff_Num_Y01=Buff_Num_Y;
-
-    Root_Type_xy(0,INT_Type,&Buff_Num_X01,&Buff_Num_Y01);
-
-    if(Buff_Num_X01<9&&Buff_Num_Y01<9){
-        for(int i0;i0<4;i0++){
-            if(DistanceToCenter(i0,Buff_Num_X01,Buff_Num_Y01)<MaxDistanceByType(INT_Type)-1){
-                for(Buff_Num01=0;Buff_Num01<20;Buff_Num01++){
-                    if(Root_Map[i0][Buff_Num01][0][0]==-1){
-                        break;
-                    }
+    if(Type<70){
+        switch (Buff_Num){
+            case 1:
+                if(INT_X<26){
+                    Map_Array_14[INT_X+1][INT_Y]=99;
                 }
-            }
-            while(true){
-                if(DistanceToCenter(i0,Buff_Num_X01,Buff_Num_Y01)<MaxDistanceByType(INT_Type)-1){
-
+                if(INT_X>0){
+                    Map_Array_14[INT_X-1][INT_Y]=99;
                 }
-                else{
-                    break;
+                break;
+            case 2:
+                if(INT_Y<26){
+                    Map_Array_14[INT_X][INT_Y+1]=99;
                 }
-            }
+                if(INT_Y>0){
+                    Map_Array_14[INT_X][INT_Y-1]=99;
+                }
+                break;
+            case 3:
+                if(INT_X>0){
+                    Map_Array_14[INT_X-1][INT_Y]=99;
+                }
+                if(INT_Y<26){
+                    Map_Array_14[INT_X][INT_Y+1]=99;
+                }
+                break;
+            case 4:
+                if(INT_X>0){
+                    Map_Array_14[INT_X-1][INT_Y]=99;
+                }
+                if(INT_Y>0){
+                    Map_Array_14[INT_X][INT_Y-1]=99;
+                }
+                break;
+            case 5:
+                if(INT_X<26){
+                    Map_Array_14[INT_X+1][INT_Y]=99;
+                }
+                if(INT_Y>0){
+                    Map_Array_14[INT_X][INT_Y-1]=99;
+                }
+                break;
+            case 6:
+                if(INT_X<26){
+                    Map_Array_14[INT_X+1][INT_Y]=99;
+                }
+                if(INT_Y<26){
+                    Map_Array_14[INT_X][INT_Y+1]=99;
+                }
+                break;
+            default:
+                break;
         }
     }
-    if(Buff_Num_X01>4&&Buff_Num_Y01<9){
-
-    }
-    if(Buff_Num_X01>4&&Buff_Num_Y01>4){
-
-    }
-    if(Buff_Num_X01<9&&Buff_Num_Y01>4){
-
-    }
-    else{
-
-    }
 }
-void Root_Type_xy(int ForE, int Type,int *INT_X, int *INT_Y) {
+
+
+
+void RootTypexy(int ForE, int Type,int *INT_X, int *INT_Y) {
     int Buff_Num01;
 
     Buff_Num01=Type%10;
