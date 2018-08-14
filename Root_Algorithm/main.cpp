@@ -27,20 +27,20 @@ int main() {
 
 
     int Test_Num_01=40345;
-    int Test_Num_02=140143;
+    int Test_Num_02=130233;
     int Test_Num_03=120199;
 
     Root_Map_14 FirstSession;
 
-    FirstSession.Set_Flower();
     FirstSession.Root_Map_Initialize();
 
+    FirstSession.Set_Flower();
+
     FirstSession.NumberToArray_14(Test_Num_01);
-    std::cout<<std::endl;
-    //FirstSession.LinkToCenter(Test_Num_02);
+    FirstSession.NumberToArray_14(Test_Num_02);
 
     FirstSession.Print_Data();
-    FirstSession.Print_Root_Map();
+    //FirstSession.Print_Root_Map();
 
 
     return 0;
@@ -141,7 +141,6 @@ void Root_Map_14::Center_Location(int Center_INDEX, int *INT_X, int *INT_Y) {
             break;
     }
 }
-
 int Root_Map_14::DistanceToCenter(int Center_INDEX, int INT_X, int INT_Y) {
     int Buff_Num_X, Buff_Num_Y;
 
@@ -149,7 +148,7 @@ int Root_Map_14::DistanceToCenter(int Center_INDEX, int INT_X, int INT_Y) {
 
     Center_Location(Center_INDEX, &Buff_Num_X, &Buff_Num_Y);
 
-    return abs(INT_X+INT_Y-Buff_Num_X-Buff_Num_Y);
+    return abs(INT_X+INT_Y-Buff_Num_X-Buff_Num_Y)/2;
 }
 int Root_Map_14::MaxDistanceByType(int Root_Type){
     int Buff_Num;
@@ -174,6 +173,7 @@ int Root_Map_14::MaxDistanceByType(int Root_Type){
     }
     return Buff_Num;
 }
+
 void Root_Map_14::FindRoute(int INT_Type,int INT_X, int INT_Y){
     int Buff_Num_X, Buff_Num_X01, Buff_Num_X02, Buff_Num_Y, Buff_Num_Y01, Buff_Num_Y02;
     int Buff_Num01;
@@ -191,7 +191,6 @@ void Root_Map_14::FindRoute(int INT_Type,int INT_X, int INT_Y){
                         break;
                     }
                 }
-                Root_Map[i0][Buff_Num01][]
             }
             while(true){
                 if(DistanceToCenter(i0,Buff_Num_X01,Buff_Num_Y01)<MaxDistanceByType(INT_Type)-1){
@@ -216,7 +215,6 @@ void Root_Map_14::FindRoute(int INT_Type,int INT_X, int INT_Y){
 
     }
 }
-
 void Root_Type_xy(int ForE, int Type,int *INT_X, int *INT_Y) {
     int Buff_Num01;
 
@@ -227,16 +225,16 @@ void Root_Type_xy(int ForE, int Type,int *INT_X, int *INT_Y) {
         switch(Buff_Num01)
         {
             case 3:
-                   *INT_Y=*INT_Y-1;
+                   *INT_Y=*INT_Y-2;
                 break;
             case 4:
-                   *INT_X=*INT_X+1;
+                   *INT_X=*INT_X+2;
                 break;
             case 5:
-                   *INT_Y=*INT_Y+1;
+                   *INT_Y=*INT_Y+2;
                 break;
             case 6:
-                   *INT_X=*INT_X-1;
+                   *INT_X=*INT_X-2;
                 break;
             default:
                 break;
@@ -249,61 +247,61 @@ void Root_Type_xy(int ForE, int Type,int *INT_X, int *INT_Y) {
             case 3:
                 if(ForE==0)
                 {
-                    *INT_Y=*INT_Y-1;
+                    *INT_Y=*INT_Y-2;
                 }
                 else
                 {
-                    *INT_Y=*INT_Y+1;
+                    *INT_Y=*INT_Y+2;
                 }
                 break;
             case 4:
                 if(ForE==0)
                 {
-                    *INT_X=*INT_X-1;
+                    *INT_X=*INT_X-2;
                 }
                 else
                 {
-                    *INT_X=*INT_X+1;
+                    *INT_X=*INT_X+2;
                 }
                 break;
             case 5:
                 if(ForE==0)
                 {
-                    *INT_Y=*INT_Y-1;
+                    *INT_Y=*INT_Y-2;
                 }
                 else
                 {
-                    *INT_X=*INT_X+1;
+                    *INT_X=*INT_X+2;
                 }
                 break;
             case 6:
                 if(ForE==0)
                 {
-                    *INT_X=*INT_X+1;
+                    *INT_X=*INT_X+2;
                 }
                 else
                 {
-                    *INT_Y=*INT_Y+1;
+                    *INT_Y=*INT_Y+2;
                 }
                 break;
             case 7:
                 if(ForE==0)
                 {
-                    *INT_X=*INT_X-1;
+                    *INT_X=*INT_X-2;
                 }
                 else
                 {
-                    *INT_Y=*INT_Y+1;
+                    *INT_Y=*INT_Y+2;
                 }
                 break;
             case 8:
                 if(ForE==0)
                 {
-                    *INT_Y=*INT_Y-1;
+                    *INT_Y=*INT_Y-2;
                 }
                 else
                 {
-                    *INT_X=*INT_X-1;
+                    *INT_X=*INT_X-2;
                 }
                 break;
             default:
@@ -314,16 +312,36 @@ void Root_Type_xy(int ForE, int Type,int *INT_X, int *INT_Y) {
 
 }
 
-int Root_Map_12::Checking_Data(int INT_X, int INT_Y) {
-    return Map_Array_12[INT_X][INT_Y];
-}
 int Root_Map_14::Checking_Data(int INT_X, int INT_Y) {
     return Map_Array_14[INT_X][INT_Y];
 }
 void Root_Map_14::Print_Data() {
+    std::cout.fill('0');
     for(int i0=0;i0<14;i0++){
         for(int i1=0;i1<14;i1++){
-            std::cout<<Map_Array_14[i0][i1]<<" ";
+            std::cout.width(2);
+            std::cout<<Map_Array_14[2*i1][2*i0];
+            if(i1==13){
+                break;
+            }
+            if(Map_Array_14[2*i1+1][2*i0]==0&&i1!=13){
+                std::cout << " = ";
+            }
+            else{
+                std::cout << " | ";
+            }
+        }
+        std::cout<<std::endl;
+        if(i0==13){
+            break;
+        }
+        for(int i1=0;i1<14;i1++){
+            if(Map_Array_14[2*i1][2*i0+1]==0){
+                std::cout << "||   ";
+            }
+            else{
+                std::cout << " -   ";
+            }
         }
         std::cout<<std::endl;
     }
