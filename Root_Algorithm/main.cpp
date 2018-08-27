@@ -36,7 +36,7 @@ void RootTypexy(int ForE, int Type, int *INT_X, int *INT_Y);
 int main() {
 
 
-    int Test_Num_01=40374;
+    int Test_Num_01=50474;
     int Test_Num_02=60499;
 
     Root_Map_14 FirstSession;
@@ -210,7 +210,6 @@ int Root_Map_14::MinDistanceByType(int Root_Type){
     int Buff_Num;
 
     Buff_Num=Root_Type/10;
-
     switch(Buff_Num){
         case 4:
             Buff_Num=0;
@@ -360,14 +359,14 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
     for(int i0=0;i0<29;i0++){
         for(int i1=0;i1<29;i1++){
             for(int i2=0;i2<5;i2++){
-                Node_Array[i0][i1][i2]=50;
+                Node_Array[i0][i1][i2]=9999;
             }
         }
     }
     for(int i0=0;i0<29;i0++){
         for(int i1=0;i1<29;i1++){
             for(int i2=0;i2<5;i2++){
-                CloseNode[i0][i1][i2]=50;
+                CloseNode[i0][i1][i2]=9999;
             }
         }
     }
@@ -377,67 +376,6 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
     Buff_INT02=0;
 
     CopyArrayToBuff();
-/*
-    for(int i0=0;i0<12;i0++){
-        if(Current_X!=Dest_X||Current_Y!=Dest_Y){
-            Buff_INT02=Buff_INT01;
-            CloseNode[Buff_INT01][0]=Current_X; CloseNode[Buff_INT01][1]=Current_Y;
-            if(Current_X<Dest_X&&Buff_Map_Array_14[Current_X+1][Current_Y]==0&&CurrentDistance>Min_Distance){
-                Buff_Map_Array_14[Current_X+1][Current_Y]=90;
-                Current_X=Current_X+2;
-                Buff_INT01++;
-                CurrentDistance--;
-            }
-            else if(Current_X>Dest_X&&Buff_Map_Array_14[Current_X-1][Current_Y]==0&&CurrentDistance>Min_Distance){
-                Buff_Map_Array_14[Current_X-1][Current_Y]=90;
-                Current_X=Current_X-2;
-                Buff_INT01++;
-                CurrentDistance--;
-            }
-            CloseNode[Buff_INT01][0]=Current_X; CloseNode[Buff_INT01][1]=Current_Y;
-            if(Current_Y<Dest_Y&&Buff_Map_Array_14[Current_X][Current_Y+1]==0&&CurrentDistance>Min_Distance){
-                Buff_Map_Array_14[Current_X][Current_Y+1]=90;
-                Current_Y=Current_Y+2;
-                Buff_INT01++;
-                CurrentDistance--;
-            }
-            else if(Current_Y>Dest_Y&&Buff_Map_Array_14[Current_X][Current_Y-1]==0&&CurrentDistance>Min_Distance){
-                Buff_Map_Array_14[Current_X][Current_Y-1]=90;
-                Current_Y=Current_Y-2;
-                Buff_INT01++;
-                CurrentDistance--;
-            }
-            CloseNode[Buff_INT01][0]=Current_X; CloseNode[Buff_INT01][1]=Current_Y;
-            if(Buff_INT01==Buff_INT02){
-                if(Buff_Map_Array_14[Current_X+1][Current_Y]==0&&CurrentDistance<Max_Distance){
-                    Buff_Map_Array_14[Current_X+1][Current_Y]=90;
-                    Current_X=Current_X+2;
-                    Buff_INT01++;
-                    CurrentDistance++;
-                }
-                else if(Buff_Map_Array_14[Current_X-1][Current_Y]==0&&CurrentDistance<Max_Distance){
-                    Buff_Map_Array_14[Current_X-1][Current_Y]=90;
-                    Current_X=Current_X-2;
-                    Buff_INT01++;
-                    CurrentDistance++;
-                }
-                CloseNode[Buff_INT01][0]=Current_X; CloseNode[Buff_INT01][1]=Current_Y;
-                if(Buff_Map_Array_14[Current_X][Current_Y+1]==0&&CurrentDistance<Max_Distance){
-                    Buff_Map_Array_14[Current_X][Current_Y+1]=90;
-                    Current_Y=Current_Y+2;
-                    Buff_INT01++;
-                    CurrentDistance++;
-                }
-                else if(Buff_Map_Array_14[Current_X][Current_Y-1]==0&&CurrentDistance<Max_Distance){
-                    Buff_Map_Array_14[Current_X][Current_Y-1]=90;
-                    Current_Y=Current_Y-2;
-                    Buff_INT01++;
-                    CurrentDistance++;
-                }
-                CloseNode[Buff_INT01][0]=Current_X; CloseNode[Buff_INT01][1]=Current_Y;
-            }
-        }
-    }*/
 
     Node_Array[Start_X][Start_Y][0]=0;
     Node_Array[Start_X][Start_Y][1]=Distance(Start_X,Start_Y,Dest_X,Dest_Y);
@@ -454,39 +392,44 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
     //std::cout<<"Start= ("<<Current_X/2<<","<<Current_Y/2<<")"<<std::endl;
 
     Buff_Num01=CloseNode[Start_X][Start_Y][0]; Buff_Num02=Current_X; Buff_Num03=Current_Y;
+    Buff_INT02=1;
 
     while(true){
 
-        if(Current_X==Dest_X&&Current_Y==Dest_Y){
+        if(Current_X==Dest_X&&Current_Y==Dest_Y&&Buff_Num01>=Min_Distance){
             break;
         }
         if(Current_Y>2) {
+            Buff_INT01=Distance(Current_X, Current_Y - 2, Dest_X, Dest_Y);
             Node_Array[Current_X][Current_Y - 2][0] = Buff_Num01 + Buff_Map_Array_14[Current_X][Current_Y - 1];
-            Node_Array[Current_X][Current_Y - 2][1] = Distance(Current_X, Current_Y - 2, Dest_X, Dest_Y);
+            Node_Array[Current_X][Current_Y - 2][1] = Buff_INT01;
             Node_Array[Current_X][Current_Y - 2][2] =
                     Node_Array[Current_X][Current_Y - 2][0] + Node_Array[Current_X][Current_Y - 2][1];
             Node_Array[Current_X][Current_Y - 2][3] = Buff_Num02;
             Node_Array[Current_X][Current_Y - 2][4] = Buff_Num03;
         }
         if(Current_X<27) {
+            Buff_INT01=Distance(Current_X + 2, Current_Y, Dest_X, Dest_Y);
             Node_Array[Current_X + 2][Current_Y][0] = Buff_Num01 + Buff_Map_Array_14[Current_X + 1][Current_Y];
-            Node_Array[Current_X + 2][Current_Y][1] = Distance(Current_X + 2, Current_Y, Dest_X, Dest_Y);
+            Node_Array[Current_X + 2][Current_Y][1] = Buff_INT01;
             Node_Array[Current_X + 2][Current_Y][2] =
                     Node_Array[Current_X + 2][Current_Y][0] + Node_Array[Current_X + 2][Current_Y][1];
             Node_Array[Current_X + 2][Current_Y][3] = Buff_Num02;
             Node_Array[Current_X + 2][Current_Y][4] = Buff_Num03;
         }
         if(Current_Y<27) {
+            Buff_INT01=Distance(Current_X, Current_Y + 2, Dest_X, Dest_Y);
             Node_Array[Current_X][Current_Y + 2][0] = Buff_Num01 + Buff_Map_Array_14[Current_X][Current_Y + 1];
-            Node_Array[Current_X][Current_Y + 2][1] = Distance(Current_X, Current_Y + 2, Dest_X, Dest_Y);
+            Node_Array[Current_X][Current_Y + 2][1] = Buff_INT01;
             Node_Array[Current_X][Current_Y + 2][2] =
                     Node_Array[Current_X][Current_Y + 2][0] + Node_Array[Current_X][Current_Y + 2][1];
             Node_Array[Current_X][Current_Y + 2][3] = Buff_Num02;
             Node_Array[Current_X][Current_Y + 2][4] = Buff_Num03;
         }
         if(Current_X>2) {
+            Buff_INT01=Distance(Current_X - 2, Current_Y, Dest_X, Dest_Y);
             Node_Array[Current_X - 2][Current_Y][0] = Buff_Num01 + Buff_Map_Array_14[Current_X - 1][Current_Y];
-            Node_Array[Current_X - 2][Current_Y][1] = Distance(Current_X - 2, Current_Y, Dest_X, Dest_Y);
+            Node_Array[Current_X - 2][Current_Y][1] = Buff_INT01;
             Node_Array[Current_X - 2][Current_Y][2] =
                     Node_Array[Current_X - 2][Current_Y][0] + Node_Array[Current_X - 2][Current_Y][1];
             Node_Array[Current_X - 2][Current_Y][3] = Buff_Num02;
@@ -495,10 +438,10 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
 
 
         Buff_Num01=9999999;
-        Buff_Num01_1=0;
+
+        //Find Min Weight Path
         for(int i0=0;i0<14;i0++){
             for(int i1=0;i1<14;i1++){
-                //std::cout<<Node_Array[2*i0+1][2*i1+1][2]<<" "<<std::endl;&&Min_Distance<Node_Array[2*i0+1][2*i1+1][2]
                 if (Node_Array[2 * i0 + 1][2 * i1 + 1][2] < Buff_Num01) {
                     Buff_Num01 = Node_Array[2 * i0 + 1][2 * i1 + 1][2];
                     Buff_Num02 = 2 * i0 + 1;
@@ -506,17 +449,36 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
                 }
             }
         }
+
+        // Copy Node_Array to CloseNode, initialize Node_Array
         for(int i0=0;i0<6;i0++){
             CloseNode[Buff_Num02][Buff_Num03][i0]=Node_Array[Buff_Num02][Buff_Num03][i0];
             Node_Array[Buff_Num02][Buff_Num03][i0]=1000;
         }
-        Buff_Map_Array_14[Current_X-(Current_X-Buff_Num02)/2][Current_Y-(Current_Y-Buff_Num03)/2]=90;
 
+        // Blocking Path which is already passed
+        if(Current_X==Buff_Num02){
+            if(Current_Y>=Buff_Num03){
+                Buff_Map_Array_14[Current_X][Current_Y-(Current_Y-Buff_Num03)/2]=90;
+            }
+            else{
+                Buff_Map_Array_14[Current_X][Current_Y-(Buff_Num03-Current_Y)/2]=90;
+            }
+        }
+        if(Current_Y==Buff_Num03){
+            if(Current_X>=Buff_Num02){
+                Buff_Map_Array_14[Current_X-(Current_X-Buff_Num02)/2][Current_Y]=90;
+            }
+            else{
+                Buff_Map_Array_14[Current_X-(Buff_Num02-Current_X)/2][Current_Y]=90;
+            }
+        }
+
+        //Pass data for next loop
         Buff_Num01=CloseNode[Buff_Num02][Buff_Num03][0];
         Current_X=Buff_Num02;
         Current_Y=Buff_Num03;
 
-        Buff_INT01=Buff_INT01+4;
         std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")=> Weight="<<CloseNode[Buff_Num02][Buff_Num03][2]<<", Distance="<<Distance(Current_X , Current_Y, Dest_X, Dest_Y)<<", From ("<<CloseNode[Buff_Num02][Buff_Num03][3]/2<<","<<CloseNode[Buff_Num02][Buff_Num03][4]/2<<")"<<std::endl;
     }
 
