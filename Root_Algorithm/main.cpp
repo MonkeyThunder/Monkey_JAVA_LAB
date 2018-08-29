@@ -5,7 +5,7 @@ class Root_Map_14{
 private:
     int Map_Array_14[29][29];//14+15(Wall)
     int Buff_Map_Array_14[29][29];
-    int Root_Path_Array_14[16][13][2];
+    int Root_Path_Array_14[16][50][2];
 
 public:
     void Map_Initialize();
@@ -22,7 +22,7 @@ public:
     int MaxDistanceByType(int Root_Type);
     void RootTypeToSetWall(int Type, int INT_X, int INT_Y);
 
-    void AStarAlgorithm(int Path_Index,int Min_Distance, int Max_Distance, int Start_X, int Start_Y, int Dest_X, int Dest_Y);
+    int AStarAlgorithm(int Path_Index,int Min_Distance, int Start_X, int Start_Y, int Dest_X, int Dest_Y);
 
     void FindRoute(int INT_Input);
 
@@ -56,7 +56,7 @@ int main() {
     FirstSession.NumberToArray_14(Test_Num_01,&Test_Type,&Test_X01,&Test_Y01);
     FirstSession.Center_Location(15,&Test_X02,&Test_Y02);
 
-    FirstSession.AStarAlgorithm(Test_INDEX,FirstSession.MinDistanceByType(Test_Type),FirstSession.MaxDistanceByType(Test_Type),Test_X01,Test_Y01,Test_X02,Test_Y02);
+    FirstSession.FindRoute(Test_Num_01);
 
     FirstSession.Buff_Print_Data();
 
@@ -138,66 +138,66 @@ void Root_Map_14::Center_Location(int Center_INDEX, int *INT_X, int *INT_Y) {
     {
         case 0:
             *INT_X=11;
-            *INT_Y=9;
+            *INT_Y=7;
             break;
         case 1:
             *INT_X=13;
-            *INT_Y=9;
+            *INT_Y=7;
             break;
         case 2:
             *INT_X=15;
-            *INT_Y=9;
+            *INT_Y=7;
             break;
         case 3:
             *INT_X=17;
-            *INT_Y=9;
+            *INT_Y=7;
             break;
         case 4:
-            *INT_X=19;
+            *INT_X=21;
             *INT_Y=11;
             break;
         case 5:
-            *INT_X=19;
+            *INT_X=21;
             *INT_Y=13;
             break;
         case 6:
-            *INT_X=19;
+            *INT_X=21;
             *INT_Y=15;
             break;
         case 7:
-            *INT_X=19;
+            *INT_X=21;
             *INT_Y=17;
             break;
         case 8:
             *INT_X=17;
-            *INT_Y=19;
+            *INT_Y=21;
             break;
         case 9:
             *INT_X=15;
-            *INT_Y=19;
+            *INT_Y=21;
             break;
         case 10:
             *INT_X=13;
-            *INT_Y=19;
+            *INT_Y=21;
             break;
         case 11:
             *INT_X=11;
-            *INT_Y=19;
+            *INT_Y=21;
             break;
         case 12:
-            *INT_X=9;
+            *INT_X=7;
             *INT_Y=17;
             break;
         case 13:
-            *INT_X=9;
+            *INT_X=7;
             *INT_Y=15;
             break;
         case 14:
-            *INT_X=9;
+            *INT_X=7;
             *INT_Y=13;
             break;
         case 15:
-            *INT_X=9;
+            *INT_X=7;
             *INT_Y=11;
             break;
         default:
@@ -216,13 +216,13 @@ int Root_Map_14::MinDistanceByType(int Root_Type){
             Buff_Num=0;
             break;
         case 5:
-            Buff_Num=6;
+            Buff_Num=4;
             break;
         case 6:
-            Buff_Num=7;
+            Buff_Num=5;
             break;
         case 7:
-            Buff_Num=8;
+            Buff_Num=5;
             break;
         default:
             break;
@@ -236,16 +236,16 @@ int Root_Map_14::MaxDistanceByType(int Root_Type){
 
     switch(Buff_Num){
         case 4:
-            Buff_Num=5;
+            Buff_Num=3;
             break;
         case 5:
-            Buff_Num=6;
+            Buff_Num=4;
             break;
         case 6:
-            Buff_Num=11;
+            Buff_Num=9;
             break;
         case 7:
-            Buff_Num=12;
+            Buff_Num=10;
             break;
         default:
             break;
@@ -351,7 +351,7 @@ void Root_Map_14::RootTypeToSetWall(int Type, int INT_X, int INT_Y){
     }
 }
 
-void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Distance, int Start_X, int Start_Y, int Dest_X, int Dest_Y){
+int Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Start_X, int Start_Y, int Dest_X, int Dest_Y){
     int Current_X, Current_Y, Buff_INT01, Buff_INT02;
     int Buff_Num01, Buff_Num01_1, Buff_Num02, Buff_Num03, Weight[4];
     int Node_Array[29][29][5];//0-Depth(From Start), 1-Distance, 2-0+1, 3-Before_X, 4-Before_Y
@@ -393,11 +393,14 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
     //std::cout<<"Start= ("<<Current_X/2<<","<<Current_Y/2<<")"<<std::endl;
 
     Buff_Num01=CloseNode[Start_X][Start_Y][0]; Buff_Num02=Current_X; Buff_Num03=Current_Y;
-    Buff_INT02=1;
+    Buff_INT02=0;
 
     while(true){
 
         if(Current_X==Dest_X&&Current_Y==Dest_Y&&Buff_Num01>=Min_Distance){
+            break;
+        }
+        if(Buff_INT02>1000){
             break;
         }
         if(Current_Y>2) {
@@ -468,7 +471,6 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
                     Buff_Map_Array_14[Current_X][Current_Y-abs(Current_Y-Buff_Num03)/2]=90;
                 }
                 else{
-                    std::cout<<Current_Y<<" "<<Buff_Num03<<" "<<(Buff_Num03-Current_Y)/2<<std::endl;
                     Buff_Map_Array_14[Current_X][Current_Y+abs(Current_Y-Buff_Num03)/2]=80;
                 }
             }
@@ -487,20 +489,14 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
         Current_X=Buff_Num02;
         Current_Y=Buff_Num03;
 
-        std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")=> Weight="<<CloseNode[Buff_Num02][Buff_Num03][2]<<", Distance="<<Distance(Current_X , Current_Y, Dest_X, Dest_Y)<<", From ("<<CloseNode[Buff_Num02][Buff_Num03][3]/2<<","<<CloseNode[Buff_Num02][Buff_Num03][4]/2<<")"<<std::endl;
+        //Break Integer
+        Buff_INT02++;
+
+        //std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")=> Weight="<<CloseNode[Buff_Num02][Buff_Num03][2]<<", Distance="<<Distance(Current_X , Current_Y, Dest_X, Dest_Y)<<", From ("<<CloseNode[Buff_Num02][Buff_Num03][3]/2<<","<<CloseNode[Buff_Num02][Buff_Num03][4]/2<<")"<<std::endl;
     }
 
+    //std::cout<<"Start = (" <<Start_X/2<<","<<Start_Y/2<<"), Dest = ("<<Dest_X/2<<", "<<Dest_Y/2<<"), Min="<<Min_Distance<<", Max"<<Max_Distance<<std::endl;
 
-
-    //std::cout<<std::endl;
-
-
-    std::cout<<"Start = (" <<Start_X/2<<","<<Start_Y/2<<"), Dest = ("<<Dest_X/2<<", "<<Dest_Y/2<<"), Min="<<Min_Distance<<", Max"<<Max_Distance<<std::endl;
-    for(int i0=0;i0<12;i0++)
-    {
-        //std::cout<<"("<<CloseNode[i0][0]/2<<","<<CloseNode[i0][1]/2<<") ";
-    }
-    //std::cout<<std::endl;
     //Recording Area
 
     Buff_INT01=0;
@@ -508,25 +504,32 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
     Current_X=Dest_X;
     Current_Y=Dest_Y;
     while(true){
-        if(Current_X==Start_X&&Current_Y==Start_Y){
-            break;
-        }
-        std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")"<<"<-";
+
+        //std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")"<<"<-";
         Root_Path_Array_14[Path_Index][Buff_INT01][0]=CloseNode[Current_X][Current_Y][3];
         Root_Path_Array_14[Path_Index][Buff_INT01][1] =CloseNode[Current_X][Current_Y][4];
         Current_X=Root_Path_Array_14[Path_Index][Buff_INT01][0];
         Current_Y=Root_Path_Array_14[Path_Index][Buff_INT01][1];
         Buff_INT01++;
+        if(Current_X==Start_X&&Current_Y==Start_Y){
+            break;
+        }
         if(Buff_INT01>20){
             break;
         }
     }
-    std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")"<<std::endl;
+    //std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")"<<std::endl;
     //std::cout<<Buff_INT01<<std::endl;
+
+    return Buff_INT01;
 }
 
 void Root_Map_14::FindRoute(int INT_Input){
-    int Buff_Num_Type, Buff_Num_X, Buff_Num_X01, Buff_Num_X02, Buff_Num_Y, Buff_Num_Y01, Buff_Num_Y02;
+    int Buff_Num_0;
+    int Buff_Num_Type, Buff_Num_X, Buff_Num_Y;
+    int Buff_Num_X01, Buff_Num_X02, Buff_Num_Y01, Buff_Num_Y02;
+    int Buff_Num_DX01, Buff_Num_DX02, Buff_Num_DY01, Buff_Num_DY02;
+    int Buff_Path_Distance;
 
 
     NumberToArray_14(INT_Input,&Buff_Num_Type,&Buff_Num_X,&Buff_Num_Y);
@@ -534,13 +537,61 @@ void Root_Map_14::FindRoute(int INT_Input){
     Buff_Num_X01=Buff_Num_X; Buff_Num_X02=Buff_Num_X;
     Buff_Num_Y01=Buff_Num_Y; Buff_Num_Y02=Buff_Num_Y;
 
+    Buff_Num_0=0;
+    Buff_Path_Distance=9999;
+
     if(Buff_Num_Type/10<7){
         RootTypexy(0,Buff_Num_Type,&Buff_Num_X01,&Buff_Num_Y01);
 
+        for(int i0=0;i0<16;i0++){
+            Center_Location(i0,&Buff_Num_DX01,&Buff_Num_DY01);
+            if(Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01)<=MaxDistanceByType(Buff_Num_Type)){
+                Buff_Path_Distance=AStarAlgorithm(Buff_Num_0,MinDistanceByType(Buff_Num_Type),Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01);
+                if(Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
+                    Buff_Num_0++;
+                }
+                Buff_Path_Distance=9999;
+            }
+        }
+
         RootTypexy(1,Buff_Num_Type,&Buff_Num_X02,&Buff_Num_Y02);
+
+        for(int i0=0;i0<16;i0++){
+            Center_Location(i0,&Buff_Num_DX02,&Buff_Num_DY02);
+            if(Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX02,Buff_Num_DY02)<=MaxDistanceByType(Buff_Num_Type)){
+                Buff_Path_Distance=AStarAlgorithm(Buff_Num_0,MinDistanceByType(Buff_Num_Type),Buff_Num_X02,Buff_Num_Y02,Buff_Num_DX02,Buff_Num_DY02);
+                if(Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
+                    Buff_Num_0++;
+                }
+                Buff_Path_Distance=9999;
+            }
+        }
     }
     else if(Buff_Num_Type/10<8){
+        RootTypexy(0,Buff_Num_Type,&Buff_Num_X01,&Buff_Num_Y01);
 
+        for(int i0=0;i0<16;i0++){
+            Center_Location(i0,&Buff_Num_DX01,&Buff_Num_DY01);
+            if(Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01)<=MaxDistanceByType(Buff_Num_Type)){
+                Buff_Path_Distance=AStarAlgorithm(Buff_Num_0,MinDistanceByType(Buff_Num_Type),Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01);
+                if(Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
+                    Buff_Num_0++;
+                }
+                Buff_Path_Distance=9999;
+            }
+        }
+    }
+
+    while(true){
+        if(Buff_Num_0==0){
+            break;
+        }
+        for(int i0=0;i0<1+MaxDistanceByType(Buff_Num_Type);i0++){
+            std::cout<<"("<<Root_Path_Array_14[Buff_Num_0][i0][0]/2<<","<<Root_Path_Array_14[Buff_Num_0][i0][1]/2<<")"<<"<-";
+        }
+        std::cout<<std::endl;
+
+        Buff_Num_0--;
     }
 }
 
