@@ -5,7 +5,7 @@ class Root_Map_14{
 private:
     int Map_Array_14[29][29];//14+15(Wall)
     int Buff_Map_Array_14[29][29];
-    int Root_Path_Array_14[16][50][2];
+    int Root_Path_Array_14[50][50][2];
 
 public:
     void Map_Initialize();
@@ -36,7 +36,7 @@ void RootTypexy(int ForE, int Type, int *INT_X, int *INT_Y);
 int main() {
 
 
-    int Test_Num_01=50474;
+    int Test_Num_01=50464;
     int Test_Num_02=60499;
 
     Root_Map_14 FirstSession;
@@ -49,6 +49,7 @@ int main() {
     FirstSession.NumberToArray_14(Test_Num_01);
     FirstSession.NumberToArray_14(Test_Num_02);
     FirstSession.NumberToArray_14(30499);
+    FirstSession.NumberToArray_14(40599);
 
     //FirstSession.Print_Data();
 
@@ -86,8 +87,8 @@ void Root_Map_14::Map_Initialize() {
     }
 }
 void Root_Map_14::Path_Initialize(){
-    for(int i0=0;i0<16;i0++){
-        for(int i1=0;i1<13;i1++){
+    for(int i0=0;i0<50;i0++){
+        for(int i1=0;i1<50;i1++){
             Root_Path_Array_14[i0][i1][0]=-1;
             Root_Path_Array_14[i0][i1][1]=-1;
         }
@@ -499,10 +500,13 @@ int Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Start_X, i
 
     //Recording Area
 
-    Buff_INT01=0;
+    Buff_INT01=1;
 
     Current_X=Dest_X;
     Current_Y=Dest_Y;
+    Root_Path_Array_14[Path_Index][0][0]=Dest_X;
+    Root_Path_Array_14[Path_Index][0][1]=Dest_Y;
+
     while(true){
 
         //std::cout<<"("<<Current_X/2<<","<<Current_Y/2<<")"<<"<-";
@@ -534,6 +538,8 @@ void Root_Map_14::FindRoute(int INT_Input){
 
     NumberToArray_14(INT_Input,&Buff_Num_Type,&Buff_Num_X,&Buff_Num_Y);
 
+    std::cout<<INT_Input<<" "<<Buff_Num_Type<<" "<<Buff_Num_X<<" "<<Buff_Num_Y<<" "<<MinDistanceByType(Buff_Num_Type)<<" "<<MaxDistanceByType(Buff_Num_Type)<<std::endl;
+
     Buff_Num_X01=Buff_Num_X; Buff_Num_X02=Buff_Num_X;
     Buff_Num_Y01=Buff_Num_Y; Buff_Num_Y02=Buff_Num_Y;
 
@@ -545,53 +551,88 @@ void Root_Map_14::FindRoute(int INT_Input){
 
         for(int i0=0;i0<16;i0++){
             Center_Location(i0,&Buff_Num_DX01,&Buff_Num_DY01);
-            if(Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01)<=MaxDistanceByType(Buff_Num_Type)){
+
+            if(Map_Array_14[Buff_Num_X01][Buff_Num_Y01]==0&&Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01)<=MaxDistanceByType(Buff_Num_Type)){
                 Buff_Path_Distance=AStarAlgorithm(Buff_Num_0,MinDistanceByType(Buff_Num_Type),Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01);
-                if(Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
+                std::cout<<"i0="<<i0<<" Buff_Num = "<<Buff_Num_0<<" Distance = "<<Buff_Path_Distance<<std::endl;
+                if(Buff_Path_Distance>=MinDistanceByType(Buff_Num_Type)&&Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
                     Buff_Num_0++;
+                }
+                else{
+                    for(int i1=0;i1<50;i1++){
+                        Root_Path_Array_14[Buff_Num_0][i1][0]=-1;
+                        Root_Path_Array_14[Buff_Num_0][i1][1]=-1;
+                    }
                 }
                 Buff_Path_Distance=9999;
             }
         }
+        std::cout<<"From ("<<Buff_Num_X01/2<<","<<Buff_Num_Y01/2<<"), Buff_0="<<Buff_Num_0<<std::endl;
 
         RootTypexy(1,Buff_Num_Type,&Buff_Num_X02,&Buff_Num_Y02);
 
         for(int i0=0;i0<16;i0++){
             Center_Location(i0,&Buff_Num_DX02,&Buff_Num_DY02);
-            if(Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX02,Buff_Num_DY02)<=MaxDistanceByType(Buff_Num_Type)){
+
+            if(Map_Array_14[Buff_Num_X02][Buff_Num_Y02]==0&&Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX02,Buff_Num_DY02)<=MaxDistanceByType(Buff_Num_Type)){
                 Buff_Path_Distance=AStarAlgorithm(Buff_Num_0,MinDistanceByType(Buff_Num_Type),Buff_Num_X02,Buff_Num_Y02,Buff_Num_DX02,Buff_Num_DY02);
-                if(Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
+                std::cout<<"Distance = "<<Buff_Path_Distance<<std::endl;
+                if(Buff_Path_Distance>=MinDistanceByType(Buff_Num_Type)&&Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
                     Buff_Num_0++;
+                }
+                else{
+                    for(int i1=0;i1<50;i1++){
+                        Root_Path_Array_14[Buff_Num_0][i1][0]=-1;
+                        Root_Path_Array_14[Buff_Num_0][i1][1]=-1;
+                    }
                 }
                 Buff_Path_Distance=9999;
             }
         }
+
+        std::cout<<"From ("<<Buff_Num_X02/2<<","<<Buff_Num_Y02/2<<"), Buff_0="<<Buff_Num_0<<std::endl;
+
     }
     else if(Buff_Num_Type/10<8){
         RootTypexy(0,Buff_Num_Type,&Buff_Num_X01,&Buff_Num_Y01);
 
         for(int i0=0;i0<16;i0++){
             Center_Location(i0,&Buff_Num_DX01,&Buff_Num_DY01);
-            if(Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01)<=MaxDistanceByType(Buff_Num_Type)){
+
+            if(Map_Array_14[Buff_Num_X01][Buff_Num_Y01]==0&&Distance(Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01)<=MaxDistanceByType(Buff_Num_Type)){
                 Buff_Path_Distance=AStarAlgorithm(Buff_Num_0,MinDistanceByType(Buff_Num_Type),Buff_Num_X01,Buff_Num_Y01,Buff_Num_DX01,Buff_Num_DY01);
-                if(Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
+                std::cout<<"Distance = "<<Buff_Path_Distance<<std::endl;
+                if(Buff_Path_Distance>=MinDistanceByType(Buff_Num_Type)&&Buff_Path_Distance<=MaxDistanceByType(Buff_Num_Type)){
                     Buff_Num_0++;
+                }
+                else{
+                    for(int i1=0;i1<50;i1++){
+                        Root_Path_Array_14[Buff_Num_0][i1][0]=-1;
+                        Root_Path_Array_14[Buff_Num_0][i1][1]=-1;
+                    }
                 }
                 Buff_Path_Distance=9999;
             }
         }
+
+        std::cout<<"From ("<<Buff_Num_X01/2<<","<<Buff_Num_Y01/2<<"), Buff_0="<<Buff_Num_0<<std::endl;
     }
 
     while(true){
-        if(Buff_Num_0==0){
-            break;
-        }
-        for(int i0=0;i0<1+MaxDistanceByType(Buff_Num_Type);i0++){
+
+        Buff_Num_0--;
+
+        for(int i0=0;i0<5+MaxDistanceByType(Buff_Num_Type);i0++){
             std::cout<<"("<<Root_Path_Array_14[Buff_Num_0][i0][0]/2<<","<<Root_Path_Array_14[Buff_Num_0][i0][1]/2<<")"<<"<-";
         }
         std::cout<<std::endl;
 
-        Buff_Num_0--;
+
+
+        if(Buff_Num_0==0){
+            break;
+        }
+
     }
 }
 
