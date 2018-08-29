@@ -48,6 +48,7 @@ int main() {
 
     FirstSession.NumberToArray_14(Test_Num_01);
     FirstSession.NumberToArray_14(Test_Num_02);
+    FirstSession.NumberToArray_14(30499);
 
     //FirstSession.Print_Data();
 
@@ -451,28 +452,35 @@ void Root_Map_14::AStarAlgorithm(int Path_Index, int Min_Distance, int Max_Dista
         }
 
         // Copy Node_Array to CloseNode, initialize Node_Array
-        for(int i0=0;i0<6;i0++){
-            CloseNode[Buff_Num02][Buff_Num03][i0]=Node_Array[Buff_Num02][Buff_Num03][i0];
-            Node_Array[Buff_Num02][Buff_Num03][i0]=1000;
+        for (int i0 = 0; i0 < 6; i0++) {
+            CloseNode[Buff_Num02][Buff_Num03][i0] = Node_Array[Buff_Num02][Buff_Num03][i0];
+            Node_Array[Buff_Num02][Buff_Num03][i0] = 1000;
         }
 
+
         // Blocking Path which is already passed
-        if(Current_X==Buff_Num02){
-            if(Current_Y>=Buff_Num03){
-                Buff_Map_Array_14[Current_X][Current_Y-(Current_Y-Buff_Num03)/2]=90;
-            }
-            else{
-                Buff_Map_Array_14[Current_X][Current_Y-(Buff_Num03-Current_Y)/2]=90;
-            }
+        if(abs(Current_X-Buff_Num02)>=1||abs(Current_Y-Buff_Num03)>=1) {
+            Current_X = CloseNode[Buff_Num02][Buff_Num03][3];
+            Current_Y = CloseNode[Buff_Num02][Buff_Num03][4];
         }
-        if(Current_Y==Buff_Num03){
-            if(Current_X>=Buff_Num02){
-                Buff_Map_Array_14[Current_X-(Current_X-Buff_Num02)/2][Current_Y]=90;
+            if(Current_X==Buff_Num02){
+                if(Current_Y>Buff_Num03){
+                    Buff_Map_Array_14[Current_X][Current_Y-abs(Current_Y-Buff_Num03)/2]=90;
+                }
+                else{
+                    std::cout<<Current_Y<<" "<<Buff_Num03<<" "<<(Buff_Num03-Current_Y)/2<<std::endl;
+                    Buff_Map_Array_14[Current_X][Current_Y+abs(Current_Y-Buff_Num03)/2]=80;
+                }
             }
-            else{
-                Buff_Map_Array_14[Current_X-(Buff_Num02-Current_X)/2][Current_Y]=90;
+            if(Current_Y==Buff_Num03){
+                if(Current_X>Buff_Num02){
+                    Buff_Map_Array_14[Current_X-abs(Current_X-Buff_Num02)/2][Current_Y]=90;
+                }
+                else{
+                    Buff_Map_Array_14[Current_X+abs(Current_X-Buff_Num02)/2][Current_Y]=90;
+                }
             }
-        }
+
 
         //Pass data for next loop
         Buff_Num01=CloseNode[Buff_Num02][Buff_Num03][0];
